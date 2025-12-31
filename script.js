@@ -125,14 +125,67 @@ if (heroBadge) {
     }, 100);
 }
 
-// Visitor counter functionality (placeholder for Azure Function integration)
-document.addEventListener('DOMContentLoaded', function() {
+// ============================================
+// VISITOR COUNTER - Step 7 of Cloud Resume Challenge
+// ============================================
+
+// IMPORTANT: Replace this URL with your actual Azure Function URL
+// After deploying your function, it will look something like:
+// https://cloudresume-api.azurewebsites.net/api/GetVisitorCount
+const API_URL = 'https://cloudresume-api-rubelefsky-gceag4fsg8gmh0d5.centralus-01.azurewebsites.net/api/getvisitorcounter';
+
+/**
+ * Fetches the visitor count from the Azure Function API
+ * and updates the counter display on the page
+ */
+async function updateVisitorCounter() {
     const counter = document.getElementById('visitorCount');
-    if (counter) {
-        // This would connect to your Azure Function
-        // For now, showing a placeholder
-        setTimeout(() => {
-            counter.textContent = 'Loading...';
-        }, 500);
+    
+    if (!counter) {
+        console.log('Visitor counter element not found');
+        return;
     }
+
+    try {
+        // Show loading state
+        counter.textContent = 'Loading...';
+        
+        // Call the Azure Function API
+        const response = await fetch(API_URL, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        // Update the counter with the retrieved value
+        counter.textContent = data.count.toLocaleString();
+        
+        // Optional: Add a subtle animation when count updates
+        counter.style.transform = 'scale(1.1)';
+        setTimeout(() => {
+            counter.style.transform = 'scale(1)';
+        }, 200);
+
+    } catch (error) {
+        console.error('Error fetching visitor count:', error);
+        
+        // Show error state - you might want to hide this in production
+        // or show a default value
+        counter.textContent = '---';
+        
+        // Optional: Retry after a delay
+        // setTimeout(updateVisitorCounter, 5000);
+    }
+}
+
+// Initialize visitor counter when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    updateVisitorCounter();
 });

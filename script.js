@@ -132,7 +132,7 @@ if (heroBadge) {
 // IMPORTANT: Replace this URL with your actual Azure Function URL
 // After deploying your function, it will look something like:
 // https://cloudresume-api.azurewebsites.net/api/GetVisitorCount
-const API_URL = '/api/GetVisitorCount';
+const API_URL = '/api/GetVisitorCounter';
 
 /**
  * Fetches the visitor count from the Azure Function API

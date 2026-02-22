@@ -9,7 +9,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     try:
         # Get connection string from environment variable
-        connection_string = os.environ["AzureWebJobsStorage_CosmosDB"]
+        connection_string = os.environ["CosmosConnectionString"]
         table_name = "VisitorCounter"
         
         # Connect to Table Storage
